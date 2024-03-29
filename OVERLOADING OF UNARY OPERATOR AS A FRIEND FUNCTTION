@@ -1,0 +1,32 @@
+// OPERATOR OVERLOADING OF UNARY OPERATOR "-"
+#include <iostream>
+using namespace std;
+
+class COMPLEX {
+private:
+  int I, R;
+
+public:
+  void setdata(int X, int Y) {
+    I = X;
+    R = Y;
+  }
+  void showdata() {
+    cout << "IMAGINARY PART IS: " << I << "\tAND REAL PART IS: " << R;
+  }
+   friend COMPLEX operator-(COMPLEX);
+};
+COMPLEX operator-(COMPLEX A){
+COMPLEX temp;
+temp.I = -A.I; // EARLIER WHEN THE OVERLOADED WAS THE MEMBER WE DIRECTLY USED MEMBERS OF X LIKE temp.I=I...
+temp.R = -A.R;
+return temp;
+}
+
+int main() {
+  COMPLEX X, Y;
+  X.setdata(5, 6);
+  Y = -X; // NOW IT MEANS operator-(X); BEFORE IT WAS LIKE X.operator-();
+  Y.showdata();
+  return 0;
+}
