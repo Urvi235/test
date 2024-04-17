@@ -1,0 +1,87 @@
+// READINF OBJECT RECORD
+#include <fstream>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class BOOK {
+private:
+  string Title = "NOT INPUTTED", author = "NOT INPUTTED";
+  unsigned int bookid = 0;
+  float price = 0;
+
+public:
+  BOOK() {
+    cout << "ENTER BOOK ID\n";
+    cin >> bookid;
+    cin.ignore();
+
+    cout << "ENTER BOOK PRICE\n";
+    cin >> price;
+    cin.ignore();
+
+    cout << "ENTER BOOK TITLE\n";
+    getline(cin, Title);
+
+    cout << "ENTER BOOK AUTHOR\n";
+    getline(cin, author);
+  }
+  void display() {
+    cout << "BOOK ID IS \t" << bookid << endl;
+    cout << "BOOK PRICE IS \t" << price << endl;
+    cout << "BOOK TITLE IS \t" << Title << endl;
+    cout << "BOOK AUTHOR IS \t" << author << endl;
+  }
+  int StoreBookData();
+  void ViewAllRecords();
+};
+
+int BOOK::StoreBookData() {
+  ofstream fout("MYFILE1.dat", ios::out | ios::app);
+
+  if (!fout) {
+    cout << "FILE NOT FOUND";
+    return 1;
+  } else if (Title == "NOT INPUTTED" || bookid == 0 || price == 0 || author == "NOT INPUTTED") {
+    cout << "RECORD IS UNAVAILABLE\n";
+    return 1;
+  } else {
+    fout << Title << endl;
+    fout << author << endl;
+    fout << bookid << endl;
+    fout << price << endl;
+    fout.close();
+    return 0; // SUCCESSFUL ACCOMPLISHMENT
+  }
+}
+
+void BOOK::ViewAllRecords() {
+  ifstream fin("MYFILE1.dat");
+  if (!fin) {
+    cout << "FILE NOT FOUND";
+    return;
+  }
+
+  string line;
+  while (getline(fin, line)) {
+    Title = line;
+    getline(fin, line);
+    author = line;
+    fin >> bookid;
+    fin.ignore();
+    fin >> price;
+    fin.ignore();
+
+    display();
+  }
+
+  fin.close();
+}
+
+int main() {
+  BOOK b1;
+  b1.StoreBookData();  // Write to file
+  b1.ViewAllRecords(); // Read from file
+  return 0;
+}
